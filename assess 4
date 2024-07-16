@@ -1,0 +1,16 @@
+import requests
+api_key = "c55e6f537cmshec82008543fb248p1a1c68jsn66f32244d2fb"
+url = "https://covid-19-data.p.rapidapi.com/country/code?"
+
+response = requests.get(url, headers={"X-Access-Token": api_key})
+data = response.json()
+
+global_data = data['Global']
+print("Global COVID-19 Statistics:")
+print(f"New Confirmed Cases: {global_data['NewConfirmed']}")
+print(f"Total Confirmed Cases: {global_data['TotalConfirmed']}")
+print(f"New Deaths: {global_data['NewDeaths']}")
+print(f"Total Deaths: {global_data['TotalDeaths']}")
+print(f"New Recovered Cases: {global_data['NewRecovered']}")
+print(f"Total Recovered Cases: {global_data['TotalRecovered']}")
+
