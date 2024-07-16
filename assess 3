@@ -1,0 +1,52 @@
+import requests
+import json
+import time
+import matplotlib.pyplot as plt
+
+def get_traffic_data(api_key, city):
+    """Fetches traffic data from a traffic API (replace with your API provider)."""
+
+    # Replace with your actual API URL and parameters
+    api_url = f"https://api.example.com/traffic/v1/data?key={api_key}&city={city}" 
+    response = requests.get(api_url)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Error fetching traffic data: {response.status_code}")
+        return None
+
+def display_traffic_data(traffic_data):
+    """Displays traffic information."""
+    if traffic_data:
+        for road in traffic_data['roads']:
+            print(f"Road: {road['name']}")
+            print(f"Traffic Condition: {road['condition']}")
+            print(f"Speed: {road['speed']} km/h")
+            print(f"Delay: {road['delay']} minutes")
+            print("-" * 20)
+    else:
+        print("No traffic data available.")
+
+def plot_traffic_data(traffic_data):
+    """Plots traffic data (example for speed)."""
+    if traffic_data:
+        speeds = [road['speed'] for road in traffic_data['roads']]
+        plt.figure(figsize=(10, 5))
+        plt.bar([road['name'] for road in traffic_data['roads']], speeds)
+        plt.title("Traffic Speeds")
+        plt.xlabel("Road Name")
+        plt.ylabel("Speed (km/h)")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
+if __name__ == "__main__":
+    api_key = "YOUR_API_KEY"  # Replace with your actual API key
+    city = input("Enter city name: ")
+
+    while True:
+        traffic_data = get_traffic_data(api_key, city)
+        display_traffic_data(traffic_data)
+        plot_traffic_data(traffic_data)
+        time.sleep(60)  # Update every minute (adjust as needed)
