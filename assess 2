@@ -1,83 +1,14 @@
-inventory = {}
-
-def add_item(name, quantity, price):
-  """Adds an item to the inventory."""
-  if name in inventory:
-    print(f"Item '{name}' already exists in inventory. Updating quantity.")
-    inventory[name]["quantity"] += quantity
-  else:
-    inventory[name] = {"quantity": quantity, "price": price}
-    print(f"Item '{name}' added to inventory.")
-
-def remove_item(name):
-  """Removes an item from the inventory."""
-  if name in inventory:
-    del inventory[name]
-    print(f"Item '{name}' removed from inventory.")
-  else:
-    print(f"Item '{name}' not found in inventory.")
-
-def update_quantity(name, new_quantity):
-  """Updates the quantity of an item."""
-  if name in inventory:
-    inventory[name]["quantity"] = new_quantity
-    print(f"Quantity of '{name}' updated to {new_quantity}.")
-  else:
-    print(f"Item '{name}' not found in inventory.")
-
-def get_item(name):
-  """Retrieves information about an item."""
-  if name in inventory:
-    print(f"Item: {name}")
-    print(f"Quantity: {inventory[name]['quantity']}")
-    print(f"Price: {inventory[name]['price']}")
-  else:
-    print(f"Item '{name}' not found in inventory.")
-
-def list_items():
-  """Lists all items in the inventory."""
-  if inventory:
-    print("Inventory Items:")
-    for name, item in inventory.items():
-      print(f"{name}: Quantity - {item['quantity']}, Price - {item['price']}")
-  else:
-    print("Inventory is empty.")
-
-while True:
-  print("\nChoose an action:")
-  print("1. Add item")
-  print("2. Remove item")
-  print("3. Update quantity")
-  print("4. Get item information")
-  print("5. List all items")
-  print("6. Exit")
-
-  choice = input("Enter your choice: ")
-
-  if choice == '1':
-    name = input("Enter item name: ")
-    quantity = int(input("Enter quantity: "))
-    price = float(input("Enter price: "))
-    add_item(name, quantity, price)
-
-  elif choice == '2':
-    name = input("Enter item name to remove: ")
-    remove_item(name)
-
-  elif choice == '3':
-    name = input("Enter item name to update quantity: ")
-    new_quantity = int(input("Enter new quantity: "))
-    update_quantity(name, new_quantity)
-
-  elif choice == '4':
-    name = input("Enter item name to get information: ")
-    get_item(name)
-
-  elif choice == '5':
-    list_items()
-
-  elif choice == '6':
-    break
-
-  else:
-    print("Invalid choice.")
+# Inventory Management System Optimization Code in Python
+def optimize_inventory(inventory):
+    optimized_inventory = {item: quantity for item, quantity in inventory.items() if quantity > 0}
+    return optimized_inventory
+# Example Inventory
+inventory = {
+    'apple': 5,
+    'banana': 0,
+    'orange': 10,
+    'grapes': -2
+}
+# Optimize Inventory
+optimized_inventory = optimize_inventory(inventory)
+print(optimized_inventory)
