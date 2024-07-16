@@ -1,63 +1,42 @@
 import requests
 import json
 import time
-import matplotlib.pyplot as plt
-from datetime import datetime
 
-def get_weather_data(api_key, city):
-    """Fetches weather data from OpenWeatherMap API."""
+# Replace with your actual API key
+API_KEY = "a23f8f0ffc26e775550e58960edaa6d1"
+
+# Function to get weather data from OpenWeatherMap API
+def get_weather_data(city):
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    complete_url = base_url + "appid=" + api_key + "&q=" + city
+    complete_url = base_url + "appid=" + API_KEY + "&q=" + city
     response = requests.get(complete_url)
+
     if response.status_code == 200:
-        return response.json()
+        data = response.json()
+        return data
     else:
-        print(f"Error fetching weather data: {response.status_code}")
         return None
 
-def display_weather_data(weather_data):
-    """Displays weather information."""
-    if weather_data:
-        main = weather_data['main']
-        temp = main['temp'] - 273.15  # Convert Kelvin to Celsius
-        feels_like = main['feels_like'] - 273.15  # Convert Kelvin to Celsius
-        humidity = main['humidity']
-        description = weather_data['weather'][0]['description']
-        timestamp = datetime.fromtimestamp(weather_data['dt'])
+# Main loop for real-time monitoring
+while True:
+    # Get weather data for your desired city
+    city = "London"
+    weather_data = get_weather_data(city)
 
-        print(f"Weather in {weather_data['name']} at {timestamp.strftime('%Y-%m-%d %H:%M:%S')}:")
-        print(f"Temperature: {temp:.1f}°C")
-        print(f"Feels Like: {feels_like:.1f}°C")
-        print(f"Humidity: {humidity}%")
+    if weather_data:
+        # Extract relevant weather information
+        temperature = weather_data["main"]["temp"]
+        description = weather_data["weather"][0]["description"]
+        humidity = weather_data["main"]["humidity"]
+
+        # Print the weather information
+        print(f"Current weather in {city}:")
+        print(f"Temperature: {temperature} Kelvin")
         print(f"Description: {description}")
+        print(f"Humidity: {humidity}%")
+
+        # Pause for a short time before fetching new data
+        time.sleep(60)  # Fetch new data every 60 seconds
     else:
-        print("City not found or API error.")
-
-def plot_weather_data(weather_data, metric='temp'):
-    """Plots a selected metric (e.g., temperature) over time."""
-    if weather_data:
-        # This assumes the API provides historical data; adjust accordingly
-        # (You might need to call a different endpoint for historical data)
-        # Placeholder:  Replace this with actual historical data retrieval
-        dates = [datetime.now()]  # Assuming we're getting only current data
-        values = [weather_data['main'][metric] - 273.15]  # Convert Kelvin to Celsius
-
-        plt.figure(figsize=(10, 5))
-        plt.plot(dates, values)
-        plt.title(f"Weather {metric.capitalize()} in {weather_data['name']}")
-        plt.xlabel("Date")
-        plt.ylabel(metric.capitalize())
-        plt.xticks(rotation=45)
-        plt.tight_layout()
-        plt.show()
-
-if __name__ == "__main__":
-    api_key = "a23f8f0ffc26e775550e58960edaa6d1
-"  # Replace with your actual OpenWeatherMap API key
-    city = input("Enter city name: ")
-
-    while True:
-        weather_data = get_weather_data(api_key, city)
-        display_weather_data(weather_data)
-        plot_weather_data(weather_data)  # Plot 'temp' (temperature) by default
-        time.sleep(60)  # Update every minute (adjust as needed)
+        print(f"Error: City not found or API request failed.")
+        break
